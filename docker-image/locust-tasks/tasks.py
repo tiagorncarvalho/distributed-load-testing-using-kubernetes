@@ -50,12 +50,12 @@ class MetricsTaskSet(TaskSet):
     @task(999)
     def getSuggestion(self):
         self.client.post(
-        "/suggest", auth=(admin, admin), {"tipos": ["BOOK"]})
+        "/suggest", {"tipos": ["BOOK"]}, auth=(admin, admin))
         
     @task(999)
     def changePassword(self):
         self.client.put(
-        "/user/search/saldanha", auth=(saldanha, saldanha), { "password": "saldanha", "username": "saldanha"})
+        "/user/search/saldanha", { "password": "saldanha", "username": "saldanha"}, auth=(saldanha, saldanha))
         
     @task(999)
     def getLogin(self):
