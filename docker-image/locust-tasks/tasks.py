@@ -27,16 +27,45 @@ class MetricsTaskSet(TaskSet):
     def on_start(self):
         self._deviceid = str(uuid.uuid4())
 
-    @task(1)
-    def login(self):
-        self.client.post(
-            '/login', {"deviceid": self._deviceid})
+    @task(999)
+    def getItem(self):
+        self.client.get(
+            "/item/BOOK/607615b3aeb60e0f26f7c1df")
 
     @task(999)
-    def post_metrics(self):
+    def putLikes(self):
+        self.client.put(
+        "/item/BOOK/607615b3aeb60e0f26f7c1df/like", auth=(admin, admin))
+        
+    @task(999)
+    def putSeen(self):
+        self.client.put(
+        "/item/BOOK/607615b3aeb60e0f26f7c1df/seen", auth=(admin, admin))
+        
+    @task(999)
+    def getPage(self):
+        self.client.get(
+        "/lib/1")
+        
+    @task(999)
+    def getSuggestion(self):
         self.client.post(
-            "/metrics", {"deviceid": self._deviceid, "timestamp": datetime.now()})
-
+        "/suggest", auth=(admin, admin), {"tipos": ["BOOK"]})
+        
+    @task(999)
+    def changePassword(self):
+        self.client.put(
+        "/user/search/saldanha", auth=(saldanha, saldanha), { "password": "saldanha", "username": "saldanha"})
+        
+    @task(999)
+    def getLogin(self):
+        self.client.get(
+        "/user/login", auth=(admin, admin))
+        
+    @task(999)
+    def getLogout(self):
+        self.client.get(
+        "/user/logout", auth=(admin, admin))
 
 class MetricsLocust(HttpLocust):
     task_set = MetricsTaskSet
