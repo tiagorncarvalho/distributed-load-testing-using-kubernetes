@@ -18,6 +18,19 @@
 LOCUST="/usr/local/bin/locust"
 LOCUS_OPTS="-f /locust-tasks/tasks.py --host=$TARGET_HOST"
 LOCUST_MODE=${LOCUST_MODE:-standalone}
+sudo apt install jq
+ACCESS_TOKEN=$(curl --request POST \
+  --url 'https://saldanha.eu.auth0.com/oauth/token' \
+  --header 'content-type: application/x-www-form-urlencoded' \
+  --data grant_type=password \
+  --data username=miguelsaldanhafernandes@protonmail.com \
+  --data 'password=!sedeusquiser1999' \
+  --data audience=https://recommendations.sytes.net/api \
+  --data 'scope=openid name email nickname read:suggest write:item delete:item write:seen write:like write:username delete:username' \
+  --data 'client_id=72wQelC6FubulYS6qlY7ZhSVkyNgoTYF'\
+  --data client_secret=UHqFceMIWf0pzpA3CRWggxpGDxByyn_vQuw_90OdhaoascI-t5RBha4z5sRPbNJK | jq -r '.access_token'
+)
+set TOKEN="$ACCESS_TOKEN"
 
 if [[ "$LOCUST_MODE" = "master" ]]; then
     LOCUS_OPTS="$LOCUS_OPTS --master"

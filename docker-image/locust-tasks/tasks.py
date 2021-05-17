@@ -13,8 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-
+import os
 import uuid
 
 from datetime import datetime
@@ -23,6 +22,8 @@ from locust import HttpLocust, TaskSet, task
 
 class MetricsTaskSet(TaskSet):
     _deviceid = None
+    token = os.getenv("TOKEN", "NULL")
+
 
     def on_start(self):
         self._deviceid = str(uuid.uuid4())
@@ -35,12 +36,12 @@ class MetricsTaskSet(TaskSet):
     @task(999)
     def putLikes(self):
         self.client.put(
-        "/item/BOOK/607615b3aeb60e0f26f7c1df/like", auth=("admin", "admin"))
+        "/item/BOOK/607615b3aeb60e0f26f7c1df/like", headers={"authorization": "Bearer " + self.token})
         
     @task(999)
     def putSeen(self):
         self.client.put(
-        "/item/BOOK/607615b3aeb60e0f26f7c1df/seen", auth=("admin", "admin"))
+        "/item/BOOK/607615b3aeb60e0f26f7c1df/seen", headers={"authorization": "Bearer " + self.token})
         
     @task(999)
     def getPage(self):
@@ -50,22 +51,22 @@ class MetricsTaskSet(TaskSet):
     @task(999)
     def getSuggestion(self):
         self.client.post(
-        "/suggest", {"tipos": ["BOOK"]}, auth=("admin", "admin"))
+        "/suggest", {"tipos": ["BOOK"]}, headers={"authorization": "Bearer " + self.token})
         
-    @task(999)
-    def changePassword(self):
-        self.client.put(
-        "/user/search/saldanha", { "password": "saldanha", "username": "saldanha"}, auth=("saldanha", "saldanha"))
-        
-    @task(999)
-    def getLogin(self):
-        self.client.get(
-        "/user/login", auth=("admin", "admin"))
-        
-    @task(999)
-    def getLogout(self):
-        self.client.get(
-        "/user/logout", auth=("admin", "admin"))
+    # @task(999)
+    # def changePassword(self):
+    #     self.client.put(
+    #     "/user/search/saldanha", { "password": "saldanha", "username": "saldanha"}, auth=("saldanha", "saldanha"))
+    #
+    # @task(999)
+    # def getLogin(self):
+    #     self.client.get(
+    #     "/user/login", auth=("admin", "admin"))
+    #
+    # @task(999)
+    # def getLogout(self):
+    #     self.client.get(
+    #     "/user/logout", auth=("admin", "admin"))
 
 class MetricsLocust(HttpLocust):
     task_set = MetricsTaskSet
