@@ -22,11 +22,12 @@ from locust import HttpLocust, TaskSet, task
 
 class MetricsTaskSet(TaskSet):
     _deviceid = None
-    token = os.getenv("TOKEN", "NULL")
+    token = None
 
 
     def on_start(self):
         self._deviceid = str(uuid.uuid4())
+        self.token = os.getenv("TOKEN", "NULL")
 
     @task(999)
     def getItem(self):

@@ -18,7 +18,8 @@
 LOCUST="/usr/local/bin/locust"
 LOCUS_OPTS="-f /locust-tasks/tasks.py --host=$TARGET_HOST"
 LOCUST_MODE=${LOCUST_MODE:-standalone}
-sudo apt install jq
+apt update
+apt install jq -y
 ACCESS_TOKEN=$(curl --request POST \
   --url 'https://saldanha.eu.auth0.com/oauth/token' \
   --header 'content-type: application/x-www-form-urlencoded' \
@@ -30,7 +31,7 @@ ACCESS_TOKEN=$(curl --request POST \
   --data 'client_id=72wQelC6FubulYS6qlY7ZhSVkyNgoTYF'\
   --data client_secret=UHqFceMIWf0pzpA3CRWggxpGDxByyn_vQuw_90OdhaoascI-t5RBha4z5sRPbNJK | jq -r '.access_token'
 )
-set TOKEN="$ACCESS_TOKEN"
+export TOKEN="$ACCESS_TOKEN"
 
 if [[ "$LOCUST_MODE" = "master" ]]; then
     LOCUS_OPTS="$LOCUS_OPTS --master"
