@@ -29,22 +29,22 @@ class MetricsTaskSet(TaskSet):
         self._deviceid = str(uuid.uuid4())
         self.token = os.getenv("TOKEN", "NULL")
 
-    @task(999)
+    @task
     def getItem(self):
         self.client.get(
             "/item/BOOK/607615b3aeb60e0f26f7c1df")
 
-    @task(999)
+    @task
     def putLikes(self):
         self.client.put(
         "/item/BOOK/607615b3aeb60e0f26f7c1df/like", headers={"authorization": "Bearer " + self.token})
         
-    @task(999)
+    @task
     def putSeen(self):
         self.client.put(
         "/item/BOOK/607615b3aeb60e0f26f7c1df/seen", headers={"authorization": "Bearer " + self.token})
         
-    @task(999)
+    @task
     def getPage(self):
         self.client.get(
         "/lib/1")
