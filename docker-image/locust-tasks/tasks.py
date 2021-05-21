@@ -49,10 +49,10 @@ class MetricsTaskSet(TaskSet):
         self.client.get(
         "/lib/1")
         
-    @task(999)
-    def getSuggestion(self):
-        self.client.post(
-        "/suggest", {"tipos": ["BOOK"]}, headers={"authorization": "Bearer " + self.token})
+#    @task(999)
+#    def getSuggestion(self):
+#        self.client.post(
+#        "/suggest", {"tipos": ["BOOK"]}, headers={"authorization": "Bearer " + self.token})
         
     # @task(999)
     # def changePassword(self):
